@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>missile.html</title>
+    <script type="text/javascript" src = "simpleGame.js"></script>
+    <script type="text/javascript" src = "missileLib.js"></script>
+    <script type="text/javascript">
+        let game
+        let car
+        let missile
+
+        // score of game
+        let score 
+
+        // coins arrs
+        let coins
+
+        // time 
+        let time
+        
+        // time service
+        let timer
+
+        /*
+        
+            Config / Settings
+        
+        */
+        let coinsMax = 5 // coins max
+        let maxTime = 60 // max time
+
+
+        // Initial Games
+        function init(){ 
+            game = new Scene()
+            missile = new Missile(game)
+
+            car = new Car(game, missile);
+
+            coins = spawnCoins(game, coinsMax)
+            score = 0
+
+            timer = new Timer()
+            game.start()
+        }
+        
+
+        // Time tick for check a is time out
+        function timeTick(){
+            time = timer.getElapsedTime()
+            if (time >= maxTime) {
+                game.clear()
+                game.stop()
+            }
+            updateScore()
+        }
+
+
+        // Tick for check that player kill the 'coin'
+        function update(){
+            game.clear()
+            car.checkKeys()
+
+            // check cullision with 'coins'
+            coins.forEach(coin => {
+                coin.walk()
+                if(checkCollision(missile, car, coin)){
+                    score++
+                    updateScore()
+                }
+            })
+
+            car.update()
+            timeTick()
+            missile.update()
+
+            // update 'coins'
+            coins.forEach(coin => {
+                coin.update()
+            })
+
+        }
+
+
+        // Update User Interface 'score'
+        function updateScore(){
+            document.getElementById('scoreBoard').innerHTML = `Hits: ${score} | Time: ${time}`
+        }
+
+        function restart(){
+            document.location.href = ""
+        }
+
+        
+    </script>
+</head>
+<body onload = "init()">
+    <div id="scoreBoard"> Hits: 0 | Time: 0 </div>
+    <div>
+        <button type="submit" onclick="restart()"> Play Again </button>
+    </div>
+</body>
+</html>
