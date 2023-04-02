@@ -27,6 +27,12 @@ canvas {
     border: 1px solid #cecece;
 }
 
+#game-name {
+    position: absolute;
+    font-size: 70px;
+    top: 8px;
+    left: 5px;
+}
 
 #scoreBoard {
     position: absolute;
