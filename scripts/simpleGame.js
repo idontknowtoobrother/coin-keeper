@@ -327,39 +327,36 @@ function Sprite(scene, imageFile, width, height){
     this.calcSpeedAngle();
   } // end addVector
     
-  this.collidesWith = function(sprite){
-    //check for collision with another sprite
-    
-    //collisions only activated when both sprites are visible
-    collision = false;
-    if (this.visible){
-      if (sprite.visible){
-	//define borders
-	myLeft = this.x;
-	myRight = this.x + this.width;
-	myTop = this.y;
-	myBottom = this.y + this.height;
-	otherLeft = sprite.x;
-	otherRight = sprite.x + sprite.width;
-	otherTop = sprite.y;
-	otherBottom = sprite.y + sprite.height;
-    
-	//assume collision
-	collision = true;
-	
-	//determine non-colliding states
-	if ((myBottom < otherTop) ||
-	    (myTop > otherBottom) ||
-	    (myRight < otherLeft) ||
-	    (myLeft > otherRight)) {
-	      collision = false;
-	} // end if
-
-      } // end 'other visible' if
-    } // end 'I'm visible' if
-
+  this.collidesWith = function(sprite) {
+    // Check for collision with another sprite
+  
+    // Collisions only activated when both sprites are visible
+    let collision = false;
+    if (this.visible && sprite.visible) {
+      // Define borders
+      const myLeft = this.x;
+      const myRight = this.x + this.width;
+      const myTop = this.y;
+      const myBottom = this.y + this.height;
+      const otherLeft = sprite.x;
+      const otherRight = sprite.x + sprite.width;
+      const otherTop = sprite.y;
+      const otherBottom = sprite.y + sprite.height;
+  
+      // Assume collision
+      collision = true;
+  
+      // Determine non-colliding states
+      if (myBottom < otherTop ||
+          myTop > otherBottom ||
+          myRight < otherLeft ||
+          myLeft > otherRight) {
+        collision = false;
+      }
+    }
+  
     return collision;
-  } // end collidesWith
+  };
   
   this.distanceTo = function(sprite){
       //get centers of sprites
@@ -445,7 +442,7 @@ function Scene(){
     }
 
     this.updateKeys = function(e){      
-      //set current key
+      //set current 
       currentKey = e.keyCode;
       keysDown[e.keyCode] = true;
     } // end updateKeys
@@ -689,9 +686,9 @@ function Timer(){
         return this.date.getTime();
     } // end getCurrentTime
     
-    this.getElapsedTime = function(){
+    this.getElapsedTime = function(timeout){
         current = this.getCurrentTime();
-        return (current - this.startTime) / 1000;
+        return timeout - ((current - this.startTime) / 1000);
     } // end getElapsedTime
 
     //make alias functions for animations...
@@ -786,7 +783,6 @@ function Animation(spriteSheet, imgWidth, imgHeight, cellWidth, cellHeight){//fo
 	//currentFrame = Math.floor( (this.totalCycleTime % this.animationLength) / this.frameDelta );
 	elTime = this.totalCycleTime % this.animationLength;
 	currentFrame = Math.floor(elTime / this.frameDelta);
-	console.log(elTime);
 	
 	//document.getElementById("FPS").innerHTML = this.animationLength;//for debugging
 	row = Math.floor( ( this.currentCycle[1] + currentFrame ) / this.framesPerRow );
@@ -1110,6 +1106,7 @@ K_H = 72; K_I = 73; K_J = 74; K_K = 75; K_L = 76; K_M = 77; K_N = 78;
 K_O = 79; K_P = 80; K_Q = 81; K_R = 82; K_S = 83; K_T = 84; K_U = 85;
 K_V = 86; K_W = 87; K_X = 88; K_Y = 89; K_Z = 90;
 K_LEFT = 37; K_RIGHT = 39; K_UP = 38;K_DOWN = 40; K_SPACE = 32;
+K_SHIFT = 16;
 
 //Animation Constants
 SINGLE_ROW = 1; SINGLE_COLUMN = 2; VARIABLE_LENGTH = 3;
