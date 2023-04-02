@@ -55,22 +55,21 @@ function Player(game) {
 } // end car def
 
 
+const coinAnims = ["upAndDown", "upAndDown2", "upAndDown3"]
 coins_component = (game) => {
   // Create new sprite
-  var coins = new Sprite(game, "coin.png", 60, 60);
+  var coins = new Sprite(game, "coin.png", 256, 210);
+  coins.loadAnimation(256, 210, 51.2, 70);
+  coins.generateAnimationCycles();
 
-  coins.setSpeed(4);
-
-  coins.walk = function () {
-    this.setSpeed(config.coinSpeed);
-    var newDirection = Math.random() * 90 - 45;
-    this.changeAngleBy(newDirection);
-  };
+  coins.renameCycles(new Array(coinAnims[0], coinAnims[1], coinAnims[2]));
+  coins.setCurrentCycle(coinAnims[Math.floor(Math.random() * coinAnims.length)]);
+  coins.setAnimationSpeed(450);
+  coins.setSpeed(0);
 
   coins.reset = function (player) {
     var newX = Math.random() * this.cWidth;
     var newY = Math.random() * this.cHeight;
-
     if (player) {
       while (closeToXY(player.x, player.y, newX, newY)) {
         newX = Math.random() * this.cWidth;
@@ -87,12 +86,15 @@ coins_component = (game) => {
 };
 
 spawnCoins = (game, n) => {
-  var arrsComp = [];
+  let delay = 100
   for (let i = 0; i < n; i++) {
-    const coin = coins_component(game);
-    arrsComp.push(coin);
+    setTimeout(function(){
+      const coin = coins_component(game);
+      coins.push(coin);
+      console.log(delay)
+    }, delay)
+    delay += 100
   }
-  return arrsComp;
 };
 
 
@@ -110,7 +112,9 @@ function init() {
 
   player = new Player(game);
 
-  coins = spawnCoins(game, config.coinsMax);
+  coins = [];
+  spawnCoins(game, config.coinsMax)
+
   score = 0;
 
   timer = new Timer();
@@ -134,7 +138,6 @@ function update() {
 
   // check close to 'coins'
   for (const coin of coins) {
-    coin.walk();
     if (closeToXY(player.x, player.y, coin.x, coin.y)) {
       score++;
       updateScore();
@@ -160,7 +163,7 @@ function closeToXY(x1, y1, x2, y2) {
 function updateScore() {
   document.getElementById(
     "scoreBoard"
-  ).innerHTML = `COINS: ${score}/${config.coinsGoal} | TIME: ${time}`;
+  ).innerHTML = `<img src="./coin_label.png" alt="coin"> ${score}/${config.coinsGoal} TIME: ${time}`;
 }
 
 function restart() {
