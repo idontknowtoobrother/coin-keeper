@@ -41,6 +41,7 @@ function Player(game) {
       }
     }, 10)
   }
+
   character.setPosition(440, 380);
   character.setSpeed(0);
   character.pauseAnimation();
@@ -81,7 +82,6 @@ function Player(game) {
       this.setMoveAngle(180);
       this.lastDirection = 'down'
     }else if(keysDown[K_SHIFT]){
-      console.log('dash')
       this.dashed()
     }
   }; // end checkKeys
@@ -92,7 +92,7 @@ function Player(game) {
 
 const coinAnims = ["upAndDown", "upAndDown2", "upAndDown3"]
 coins_component = (game) => {
-  // Create new sprite
+  
   var coins = new Sprite(game, "coin.png", 256, 210);
   coins.loadAnimation(256, 210, 51.2, 70);
   coins.generateAnimationCycles();
@@ -143,15 +143,24 @@ let timer;
 
 // Initial Games
 function init(start) {
+  // ซ่อนคำยินดีเมื่อเล่นเกมชนะ
   document.getElementById('end-game-congrats-anm').style.display = 'none'
+  // ซ่อนคำอธิบายผู้เล่นว่าแพ้มื่อเล่นเกมแพ้
   document.getElementById('end-game-defeat-anm').style.display = 'none'
+  // ซ่อนปุ่ม restart
   document.getElementById('restart-btn').style.display = 'none'
 
+  // สร้าง canvas ของเกม
   game = new Scene();
+  // ตั้งค่าภาพพื้นหลัง ( ตรงส่วนี้ไปแก้ setBg ของ class Scene มานิดหน่อยให้ใส่รูปภาพได้ )
   game.setBG('#4F3862', '../land.png')
+
+  // สร้างตัวผู้เล่น
   player = new Player(game);
 
+  // initial array เอาไว้เก็บเหรียญ
   coins = [];
+  // initial array สร้างเหรียญทั้งหมด
   spawnCoins(game, config.coinsMax)
 
   score = 0;
@@ -166,7 +175,7 @@ function init(start) {
 // Time tick for check a is time out
 function timeTick() {
   time = timer.getElapsedTime(config.maxTime).toFixed(0);
-  updateScore();
+  updateScoreAndTime();
   if (time <= 0 && score < config.coinsGoal) {
     game.clear();
     game.stop();
@@ -184,7 +193,7 @@ function update() {
   for (const coin of coins) {
     if (closeToXY(player.x, player.y, coin.x, coin.y)) {
       score++;
-      updateScore();
+      updateScoreAndTime();
       coin.reset(player);
       if(score >= config.coinsGoal){
         game.clear();
@@ -204,14 +213,14 @@ function update() {
   }
 }
 
+// เช็คว่าใกล้เหรีญรึป่าว
 function closeToXY(x1, y1, x2, y2) {
   const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
   return distance <= 50;
 }
 
 // Update User Interface 'score'
-function updateScore() {
- 
+function updateScoreAndTime() {
   document.getElementById(
     "scoreBoard"
   ).innerHTML = `<img src="./coin_label.png" alt="coin"> ${score}/${config.coinsGoal} <img id="clock" src="./clock.png" alt="clock"> <span ${time <= 10 ? 'style="color:#FF4B4B;"' : ''}>${time < 0 ? 0 : time}</span>`;
