@@ -131,13 +131,13 @@ function init(start) {
 // Time tick for check a is time out
 function timeTick() {
   time = timer.getElapsedTime(config.maxTime).toFixed(0);
+  updateScore();
   if (time <= 0 && score < config.coinsGoal) {
     game.clear();
     game.stop();
     document.getElementById('end-game-defeat-anm').style.display = 'block'
     document.getElementById('restart-btn').style.display = 'block'
   }
-  updateScore();
 }
 
 // Tick for check that player take the 'coin'
@@ -179,7 +179,7 @@ function updateScore() {
  
   document.getElementById(
     "scoreBoard"
-  ).innerHTML = `<img src="./coin_label.png" alt="coin"> ${score}/${config.coinsGoal} <img id="clock" src="./clock.png" alt="clock"> <span ${time <= 10 ? 'style="color:#FF4B4B;"' : ''}>${time}</span>`;
+  ).innerHTML = `<img src="./coin_label.png" alt="coin"> ${score}/${config.coinsGoal} <img id="clock" src="./clock.png" alt="clock"> <span ${time <= 10 ? 'style="color:#FF4B4B;"' : ''}>${time < 0 ? 0 : time}</span>`;
 }
 
 function restart() {
