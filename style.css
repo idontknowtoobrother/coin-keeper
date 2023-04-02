@@ -7,12 +7,12 @@
 *{
     margin: 0;
     box-sizing: border-box;
+    font-family: Pixellari;
+    color: #ffffff;
 }
 
 body {
-    font-family: Pixellari;
     font-size: 25px;
-    color: #C9D1D9;
     background: rgba(11, 11, 11, 1);
     background-image: url('./bg.jpg');
     background-repeat: no-repeat;
@@ -37,8 +37,68 @@ canvas {
     align-items: center;
 }
 
+.button{
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.button button {
+    font-family: Pixellari;
+    color: #ffffff;
+    font-size: 40px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #4F3862;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+}
+
 #scoreBoard img {
     width: 30px;
     margin-bottom: 2px;
     margin-right: 2px;
+}
+
+#clock {
+    margin-top: -5px;
+    margin-left: 15px;
+}
+
+.developer-tag {
+    position: absolute;
+    color: #4F3862;
+    bottom: 3px;
+    left: 10px;
+}
+
+#end-game-congrats-anm,
+#end-game-defeat-anm {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 5%;
+    font-size: 80px;
+}
+
+#end-game-congrats-anm {
+    color: #7EFF9B
+}
+
+#end-game-defeat-anm {
+    color: #FF4B4B;
+}
+
+#start-btn button {
+    text-align: center;
+    padding-top: 15px;
+    background-color: #7ace8c
+}
+
+#restart-btn button {
+    text-align: center;
+    padding-top: 15px;
 }

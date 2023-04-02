@@ -10,11 +10,19 @@
     <script type="text/javascript" src = "./scripts/simpleGame.js"></script>
     <script type="text/javascript" src = "./scripts/player.js"></script>
 </head>
-<body onload = "init()">
-    <div id="scoreBoard"> <img src="./coin_label.png" alt="coin"> 0/0  Time: 0 </div>
-    <div>
-        <button type="submit" onclick="restart()"> Play Again </button>
-    </div>
+<body onload = "init(false)">
 
+    <div id="scoreBoard"> <img src="./coin_label.png" alt="coin"> 0/0  <img id="clock" src="./clock.png" alt="clock"> 0 </div>
+    <div id="restart-btn"class="button">
+        <button type="submit" onclick="restart()"> Restart </button>
+    </div>
+    <div id="start-btn" class="button">
+        <button type="submit" onclick="startGame()"> Start </button>
+    </div>
+    <div id="end-game-congrats-anm">Congrats !</div>
+    <div id="end-game-defeat-anm">Defeat ;(</div>
+
+    <div class="developer-tag">62160317 Akapon Chayangkanon</div>
 </body>
 </html>
+

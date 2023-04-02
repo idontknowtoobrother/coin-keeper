@@ -107,7 +107,11 @@ let time;
 let timer;
 
 // Initial Games
-function init() {
+function init(start) {
+  document.getElementById('end-game-congrats-anm').style.display = 'none'
+  document.getElementById('end-game-defeat-anm').style.display = 'none'
+  document.getElementById('restart-btn').style.display = 'none'
+
   game = new Scene();
 
   player = new Player(game);
@@ -118,15 +122,20 @@ function init() {
   score = 0;
 
   timer = new Timer();
-  game.start();
+  
+  if(start){
+    game.start()
+  } 
 }
 
 // Time tick for check a is time out
 function timeTick() {
   time = timer.getElapsedTime(config.maxTime).toFixed(0);
-  if (time <= 0) {
+  if (time <= 0 && score < config.coinsGoal) {
     game.clear();
     game.stop();
+    document.getElementById('end-game-defeat-anm').style.display = 'block'
+    document.getElementById('restart-btn').style.display = 'block'
   }
   updateScore();
 }
@@ -142,6 +151,12 @@ function update() {
       score++;
       updateScore();
       coin.reset(player);
+      if(score >= config.coinsGoal){
+        game.clear();
+        game.stop();
+        document.getElementById('end-game-congrats-anm').style.display = 'block'
+        document.getElementById('restart-btn').style.display = 'block'
+      }
     }
   }
 
@@ -161,11 +176,18 @@ function closeToXY(x1, y1, x2, y2) {
 
 // Update User Interface 'score'
 function updateScore() {
+ 
   document.getElementById(
     "scoreBoard"
-  ).innerHTML = `<img src="./coin_label.png" alt="coin"> ${score}/${config.coinsGoal} TIME: ${time}`;
+  ).innerHTML = `<img src="./coin_label.png" alt="coin"> ${score}/${config.coinsGoal} <img id="clock" src="./clock.png" alt="clock"> <span ${time <= 10 ? 'style="color:#FF4B4B;"' : ''}>${time}</span>`;
 }
 
 function restart() {
-  document.location.href = "";
+  // document.location.href = "";
+  init(true)
+}
+
+function startGame(){
+  document.getElementById('start-btn').style.display = 'none'
+  game.start();
 }
