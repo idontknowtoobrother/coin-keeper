@@ -11,7 +11,36 @@ function Player(game) {
   character.generateAnimationCycles();
   character.renameCycles(new Array("down", "right", "left", "up"));
   character.setAnimationSpeed(500);
+  character.dashed = function(){
+    if(this.dash)return
+    this.dash = true
+    const self = this
+    let intervalCool = setInterval(()=>{
+      self.dash = false
+      clearInterval(intervalCool)
+      return
+    }, config.dashCooldown)
 
+    let sc = 0
+    let scaleUp = config.dashScale/10
+    let intervalDash = setInterval(()=>{
+      if(!self.lastDirection)return
+      if(sc >= config.dashScale){
+        clearInterval(intervalDash)
+        return
+      }
+      sc+=scaleUp
+      if(self.lastDirection == 'down'){
+        self.changeYby(sc)
+      }else if(self.lastDirection == 'up'){
+        self.changeYby(-sc)
+      }else if(self.lastDirection == 'right'){
+        self.changeXby(sc)
+      }else if(self.lastDirection == 'left'){
+        self.changeXby(-sc)
+      }
+    }, 10)
+  }
   character.setPosition(440, 380);
   character.setSpeed(0);
   character.pauseAnimation();
@@ -24,30 +53,36 @@ function Player(game) {
       this.setCurrentCycle("down");
       this.playAnimation();
       this.setMoveAngle(180);
+      this.lastDirection = 'down'
     } else if (keysDown[K_UP]) {
       blockedHold = true;
       this.setSpeed(speed);
       this.setCurrentCycle("up");
       this.playAnimation();
       this.setMoveAngle(0);
+      this.lastDirection = 'up'
     } else if (keysDown[K_LEFT]) {
       this.setSpeed(speed);
       this.setCurrentCycle("left");
       this.playAnimation();
       this.setMoveAngle(270);
+      this.lastDirection = 'left'
     } else if (keysDown[K_RIGHT]) {
       blockedHold = true;
       this.setSpeed(speed);
       this.setCurrentCycle("right");
       this.playAnimation();
       this.setMoveAngle(90);
+      this.lastDirection = 'right'
     }else if(keysDown[K_SPACE]){
       this.setSpeed(0);
       this.pauseAnimation()
-        this.setCurrentCycle("down");
+      this.setCurrentCycle("down");
       this.setMoveAngle(180);
+      this.lastDirection = 'down'
     }else if(keysDown[K_SHIFT]){
-        console.log('dash')
+      console.log('dash')
+      this.dashed()
     }
   }; // end checkKeys
 
@@ -113,7 +148,7 @@ function init(start) {
   document.getElementById('restart-btn').style.display = 'none'
 
   game = new Scene();
-
+  game.setBG('#4F3862')
   player = new Player(game);
 
   coins = [];

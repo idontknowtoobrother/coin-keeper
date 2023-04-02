@@ -24,7 +24,7 @@ canvas {
     left: 50%;
     transform: translateX(-50%);
     border-radius: 5px;
-    border: 5px solid #C9D1D9;
+    border: 1px solid #cecece;
 }
 
 
