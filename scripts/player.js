@@ -148,7 +148,7 @@ function init(start) {
   document.getElementById('restart-btn').style.display = 'none'
 
   game = new Scene();
-  game.setBG('#4F3862')
+  game.setBG('#4F3862', '../land.png')
   player = new Player(game);
 
   coins = [];

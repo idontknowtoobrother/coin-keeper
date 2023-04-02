@@ -499,8 +499,9 @@ function Scene(){
       this.canvas.style.top = top;
     } // end setPos
     
-    this.setBG = function(color){
+    this.setBG = function(color, imageUrl){
       this.canvas.style.backgroundColor = color;
+      this.canvas.style.backgroundImage = `url(${imageUrl})`;
     } // end this.setBG
     
     this.updateMousePos = function(e){
