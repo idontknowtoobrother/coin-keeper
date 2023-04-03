@@ -34,6 +34,18 @@ canvas {
     left: 5px;
 }
 
+#ability-status {
+    position: absolute;
+    bottom: 15%;
+    color: #fff;
+    font-size: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    border-radius: 2px;
+    background: #4F3862;
+}
+
 #scoreBoard {
     position: absolute;
     top: 16%;

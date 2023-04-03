@@ -14,12 +14,20 @@ function Player(game) {
   character.dashed = function(){
     if(this.dash)return
     this.dash = true
+    let cooldown = config.dashCooldown
+    document.getElementById('ability-status').style.display = `block`
+    document.getElementById('ability-status').innerHTML = `Dash avaliable in ${(cooldown/1000).toFixed(0)}s`
     const self = this
     let intervalCool = setInterval(()=>{
-      self.dash = false
-      clearInterval(intervalCool)
-      return
-    }, config.dashCooldown)
+      cooldown -= 1000
+      document.getElementById('ability-status').innerHTML = `Dash avaliable in ${(cooldown/1000).toFixed(0)}s`
+      if(cooldown <= 0 ){
+        self.dash = false
+        clearInterval(intervalCool)
+        document.getElementById('ability-status').style.display = `none`
+        return
+      }
+    }, 1000)
 
     let sc = 0
     let scaleUp = config.dashScale/10
@@ -149,6 +157,9 @@ function init(start) {
   document.getElementById('end-game-defeat-anm').style.display = 'none'
   // ซ่อนปุ่ม restart
   document.getElementById('restart-btn').style.display = 'none'
+
+  document.getElementById('ability-status').style.display = `none`
+
 
   // สร้าง canvas ของเกม
   game = new Scene();
